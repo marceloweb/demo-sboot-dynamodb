@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+        - name: java-app
+          image: marceloweb/demo-java:latest  # Substitua pelo nome da sua imagem Docker
+          ports:
+            - containerPort: 8080  # Porta exposta pela sua aplicação
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: DYNAMODB_TABLE
+              value: "tb_test"  # Nome da tabela DynamoDB
+            - name: SQS_QUEUE_URL
+              value: "https://sqs.us-east-1.amazonaws.com/615299746965/sqs_test"  # URL da fila SQS
+          imagePullPolicy: Always
